@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,8 +12,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SampleSteps {
     private WebDriver driver;
@@ -100,4 +100,106 @@ public class SampleSteps {
     public void iAmOnActionPage() {
         driver.get("https://kristinek.github.io/site/examples/actions");
     }
+
+
+    @Given("^I am on the locators page$")
+    public void iAmOnLocatorsPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/examples/locators");
+    }
+
+    @Then("^I should see both locators page headers$")
+    public void iShouldLocatorHeader() throws Throwable {
+        assertEquals("Heading 1",
+                driver.findElement(By.id("heading_1")).getText());
+        assertEquals("Heading 2 text",
+                driver.findElement(By.id("heading_2")).getText());
+    }
+
+    @And("^Buttons in locators page are clicked$")
+    public void iShouldSeeEnabledLocatorButtons() throws Throwable {
+        assertTrue(driver.findElement(By.name("randomButton1")).isEnabled());
+        assertTrue(driver.findElement(By.name("randomButton2")).isEnabled());
+    }
+
+    @Then("^I see error: \"([^\"]*)\"$")
+    public void iSeeAgeError(String message) throws Throwable {
+
+        assertEquals(message,
+                driver.findElement(By.id("error")).getText());
+    }
+
+    @Then("^I am not navigated to age message page")
+    public void iAmNotInAgeMessagePage() throws Throwable {
+
+        assertFalse(driver.getCurrentUrl().contains("https://kristinek.github.io/site/examples/age_2.html"));
+    }
+
+    @Given("^I (?:am on|open) feedback page$")
+    public void iAmOnFeedbackPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/tasks/provide_feedback");
+    }
+
+        @When("^I enter name in feedback: \"([^\"]*)\"$")
+        public void iEnterNameInFeedback(String name) throws Throwable {
+        driver.findElement(By.id("fb_name")).clear();
+        driver.findElement(By.id("fb_name")).sendKeys(name);
+
+        }
+
+    @When("^I enter age in feedback: ([^\"]*)$")
+    public void iEnterAgeInFeedback(String age) throws Throwable {
+        driver.findElement(By.id("fb_age")).clear();
+        driver.findElement(By.id("fb_age")).sendKeys(age);
+    }
+
+    @When("^I click send feedback$")
+    public void iClickSendFeedback() throws Throwable {
+        driver.findElement(By.className("w3-btn-block")).click();
+
+    }
+
+    @Then("^I can see name \"([^\"]*)\" in feedback check$")
+    public void iCanSeeNameInFeedbackCheck(String name) throws Throwable {
+        assertEquals(name, driver.findElement(By.id("name")).getText());
+
+    }
+
+    @Then("^I can see age \"([^\"]*)\" in feedback check$")
+    public void iCanSeeAgeInFeedbackCheck(String age) throws Throwable {
+        assertEquals(age, driver.findElement(By.id("age")).getText());
+    }
+
+
+    @Given("^I (?:am on|open) enter a number page$")
+    public void iAmOnEnterANumberPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/tasks/enter_a_number");
+    }
+
+    @When("^I enter a number: ([^\"]*)$")
+    public void iEnterANumber(String number) throws Throwable {
+        driver.findElement(By.id("numb")).sendKeys(number);
+    }
+
+    @And("^I click submit$")
+    public void iClickSubmit() throws Throwable {
+        driver.findElement(By.className("w3-btn")).click();
+    }
+
+    @Then("I can see error text:\"([^\"]*)\" in the error page$")
+    public void iCanSeeErrorTextInTheErrorPage(String text) throws Throwable {
+        assertEquals(text,driver.findElement(By.id("ch1_error")).getText());
+    }
+
+    @Then("I see message:\"([^\"]*)\" in the page$")
+    public void iSeeMessageInThePage(String text) throws Throwable {
+        Alert alert = driver.switchTo().alert();
+        assertEquals(text, alert.getText());
+        Thread.sleep(3000);
+        alert.accept();
+    }
+
+
+
+
+
 }
