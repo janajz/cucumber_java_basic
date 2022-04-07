@@ -198,8 +198,32 @@ public class SampleSteps {
         alert.accept();
     }
 
+    @When("^I select feedback languages$")
+    public void iSelectFeedbackLanguages(List<String> languages) throws Throwable {
+        for (String language : languages) {
+            driver.findElement(By.xpath("//input[@class='w3-check' and @value='" + language + "']")).click();
+        }
+    }
+        @Then("^I can see languages \"([^\"]*)\" in feedback check$")
+                public void iCanSeeLanguagesInFeedbackCheck(String languages) throws Throwable {
+        assertEquals(languages, driver.findElement(By.id("language")).getText());
+    }
 
+    @When(("^I enter values on feedback page$"))
+    public void iEnterValuesOnFeedbackPage(Map<String, String> feedbackValue) throws Throwable {
+        driver.findElement(By.id("fb_name")).clear();
+        driver.findElement(By.id("fb_name")).sendKeys(feedbackValue.get("name"));
 
+        driver.findElement(By.id("fb_age")).clear();
+        driver.findElement(By.id("fb_age")).sendKeys(feedbackValue.get("age"));
+
+        driver.findElement(By.xpath("//input[@value='" + feedbackValue.get("genre") + "']")).click();
+    }
+
+    @Then("^I can see genre \"([^\"]*)\" in feedback check$")
+    public void iCanSeeGenreInFeedbackCheck(String genre) throws Throwable {
+        assertEquals(genre, driver.findElement(By.id("gender")).getText());
+    }
 
 
 }
