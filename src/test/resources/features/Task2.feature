@@ -10,8 +10,7 @@ Feature:
     And I enter person's name: "<name>"
     And I enter job: "<job>"
     And I click Add button
-    Then I can see name "<name>" appeared
-    And I can see job "<job>" appeared
+    Then I can see this person in the list: "<name>", "<job>"
 
     Examples:
 
@@ -24,8 +23,7 @@ Feature:
     And I enter "Tuslik" as a new name
     And I enter "doglover" as a new job
     And I click Edit button
-    Then I can see new name "Tuslik" appeared
-    And I can see new job "doglover" appeared
+    Then I can see this person in the list: "Tuslik", "doglover"
 
   Scenario: Remove a person
 
@@ -38,14 +36,12 @@ Feature:
     And I enter person's name: "Pufik"
     And I enter job: "catlover"
     And I click Add button
-    Then I can see name "Pufik" appeared
-    And I can see job "catlover" appeared
+    Then I can see this person in the list: "Pufik", "catlover"
     And I click Pencil button on the first person
     And I enter "Tuslik" as a new name
     And I enter "doglover" as a new job
     And I click Edit button
-    Then I can see new name "Tuslik" appeared
-    And I can see new job "doglover" appeared
+    Then I can see this person in the list: "Tuslik", "doglover"
     And I click on remove button
     Then I can see person name and job is removed
     And I click Reset the list

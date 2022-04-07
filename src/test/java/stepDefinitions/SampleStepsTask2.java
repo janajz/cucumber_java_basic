@@ -52,18 +52,32 @@ public class SampleStepsTask2 {
         Thread.sleep(2000);
     }
 
-    @Then("^I can see name \"([^\"]*)\" appeared$")
-    public void iCanSeeNameAppeared(String name) throws Throwable {
-        assertEquals(name, driver.findElement(By.xpath("//*[@id=\"person3\"]/span[3]")).getText());
+    @Then("^I can see this person in the list: \"([^\"]*)\", \"([^\"]*)\"$")
+    public void iSeeThisPersonInTheList(String name, String job) throws Throwable {
+        assertTrue(PersonIsInTheList(name, job));
     }
+        public boolean PersonIsInTheList (String name, String job){
+            WebElement AllPersons = driver.findElement(By.id("listOfPeople"));
+            List<WebElement> Persons = AllPersons.findElements(By.className("w3-padding-16"));
 
-    @And("^I can see job \"([^\"]*)\" appeared$")
-    public void iCanSeeJobAppeared(String job) throws Throwable {
-        assertEquals(job, driver.findElement(By.xpath("//*[@id=\"person3\"]/span[4]")).getText());
-    }
+            String nextName;
+            String nextJob;
+
+            for (WebElement rows : Persons) {
+                nextName = rows.findElement(By.className("name")).getText();
+                nextJob = rows.findElement(By.className("job")).getText();
+
+                if (name.equals(nextName) && job.equals(nextJob)) {
+                    System.out.println("Person is found");
+                    return true;
+                }
+            }
+            System.out.println("Person is NOT found");
+            return false;
+        }
 
 
-    //Scenario: Edit a person
+        //Scenario: Edit a person
 
 
     @And("^I click Pencil button on the first person$")
@@ -88,16 +102,6 @@ public class SampleStepsTask2 {
     public void iClickEditButton() throws Throwable {
         driver.findElement(By.xpath("//*[@id=\"modal_button\"]")).click();
         Thread.sleep(2000);
-    }
-
-    @Then("^I can see new name \"([^\"]*)\" appeared$")
-    public void iCanSeeNewNameAppeared(String name) throws Throwable {
-        assertEquals(name, driver.findElement(By.xpath("//*[@id=\"person0\"]/span[3]")).getText());
-    }
-
-    @And("^I can see new job \"([^\"]*)\" appeared$")
-    public void iCanSeeNewJobAppeared(String job) throws Throwable {
-        assertEquals(job, driver.findElement(By.xpath("//*[@id=\"person0\"]/span[4]")).getText());
     }
 
 
@@ -146,13 +150,13 @@ public class SampleStepsTask2 {
 
     @Then("^I can see name field is empty$")
     public void iCanSeeNameFieldIsEmpty() {
-        assertNotEquals("name", driver.findElement(By.id("name")).getText());
+        assertEquals("", driver.findElement(By.id("name")).getText());
     }
 
     @Then("^I can see job field is empty$")
     public void iCanSeeJobFieldIsEmpty() {
-        assertNotEquals("job", driver.findElement(By.id("job")).getText());
-        assertNotEquals("job", driver.findElement(By.id("job")).getText());
+        assertEquals("", driver.findElement(By.id("job")).getText());
+
     }
     @And("^I click Clear button$")
     public void iClickClearButton() throws Throwable {
